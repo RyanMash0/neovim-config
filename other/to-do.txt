@@ -1,0 +1,2 @@
+-- Make SurroundInsert works better with syntax highlighting
+-- Make SurroundInsert have more nesting

@@ -1,0 +1,7 @@
+alacritty (terminal)
+lua-language-server
+luarocks
+ripgrep
+texlab (TeX language server)
+Skim (PDF viewer; .dmg)
+font-hack-nerd-font
