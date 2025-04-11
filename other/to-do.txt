@@ -1,2 +1,3 @@
 -- Clean up SurroundInsert code
+-- Make SurroundInsert put the cursor in the correct location when windows are nested more than twice
 -- Remove sign column from telescope
