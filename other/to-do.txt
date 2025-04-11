@@ -1,2 +1,2 @@
--- Make SurroundInsert works better with syntax highlighting
--- Make SurroundInsert have more nesting
+-- Clean up SurroundInsert code
+-- Remove sign column from telescope
