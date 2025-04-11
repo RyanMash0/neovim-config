@@ -21,15 +21,15 @@ vim.keymap.set('n', L..'b', '<Cmd>bp<CR>')
 vim.keymap.set('n', L..'d', '<Cmd>bp | bd #<CR>')
 
 -- Surround
-vim.keymap.set('n', L..'s', ':Surround<CR>')
-vim.keymap.set('v', L..'s', ':VSurround<CR>')
+vim.keymap.set('n', L..'s', ':PostSurround<CR>')
+vim.keymap.set('v', L..'s', ':VPostSurround<CR>')
 
 -- Surround Insert
-vim.keymap.set('i', '()', '<Esc>:SurroundInsert (<CR>')
-vim.keymap.set('i', '[]', '<Esc>:SurroundInsert [<CR>')
-vim.keymap.set('i', '{}', '<Esc>:SurroundInsert {<CR>')
-vim.keymap.set('i', '\"\"', '<Esc>:SurroundInsert \"<CR>')
-vim.keymap.set('i', '\'\'', '<Esc>:SurroundInsert \'<CR>')
+vim.keymap.set('i', '()', '<Esc>:PreSurround (<CR>')
+vim.keymap.set('i', '[]', '<Esc>:PreSurround [<CR>')
+vim.keymap.set('i', '{}', '<Esc>:PreSurround {<CR>')
+vim.keymap.set('i', '\"\"', '<Esc>:PreSurround \"<CR>')
+vim.keymap.set('i', '\'\'', '<Esc>:PreSurround \'<CR>')
 
 -- Color Column
 vim.keymap.set('n', L..'c+', ':set colorcolumn=80<CR>')

@@ -13,12 +13,12 @@ require('config.options')
 --  Custom Plugins                                                           --
 -------------------------------------------------------------------------------
 
-package.loaded['custom.Surround'] = nil
-package.loaded['custom.SurroundInsert'] = nil
+package.loaded['custom.PostSurround'] = nil
+package.loaded['custom.PreSurround'] = nil
 package.loaded['custom.TextObjMotion'] = nil
 package.loaded['custom.MakeSet'] = nil
 
-require('custom.Surround')
-require('custom.SurroundInsert')
+require('custom.PostSurround')
+require('custom.PreSurround')
 require('custom.TextObjMotion')
 require('custom.MakeSet')

@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
---  Surround Plugin                                                          --
+--  PostSurround Plugin                                                      --
 -------------------------------------------------------------------------------
 require('custom.utils.MakeSurround')
 
-function Surround(chars)
+function PostSurround(chars)
 	local col_start = vim.api.nvim_buf_get_mark(0, "[")[2]
 	local col_end = vim.api.nvim_buf_get_mark(0, "]")[2] + 1
 	local row_start = vim.api.nvim_buf_get_mark(0, "[")[1] - 1
@@ -25,19 +25,19 @@ local function get_input(mode)
 			['v'] = '`<v`>g@',
 		}
 		if input == nil then return end
-		vim.cmd.let('&operatorfunc = { -> v:lua.Surround("'..input..'")}')
+		vim.cmd.let('&operatorfunc = { -> v:lua.PostSurround("'..input..'")}')
 		vim.fn.feedkeys(keys[mode])
 	end)
 
 end
 
-vim.api.nvim_create_user_command('Surround',
+vim.api.nvim_create_user_command('PostSurround',
 	function ()
 		get_input('n')
 	end,
 	{ nargs = 0 })
 
-vim.api.nvim_create_user_command('VSurround',
+vim.api.nvim_create_user_command('VPostSurround',
 	function ()
 		get_input('v')
 	end,

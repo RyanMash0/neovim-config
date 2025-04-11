@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
---  Surround Insert Plugin                                                   --
+--  PreSurround Plugin                                                       --
 -------------------------------------------------------------------------------
 require('custom.utils.MakeSurround')
 
-function SurroundInsert(line, win_id, ns_id, ext_mark)
+function PreSurround(line, win_id, ns_id, ext_mark)
 	local text = vim.api.nvim_buf_get_text(0, 0, 0, -1, -1, {})
 	local ext_mark_pos = vim.api.nvim_buf_get_extmark_by_id(0, ns_id, ext_mark, {})
 	local pos
@@ -55,7 +55,7 @@ local function win_resize()
 end
 
 
-vim.api.nvim_create_user_command('SurroundInsert',
+vim.api.nvim_create_user_command('PreSurround',
 function (opts)
 	local s_chars = MakeSurround(opts.args)
 	local put_chars = {s_chars[1]..s_chars[2]}
@@ -121,7 +121,7 @@ function (opts)
 	vim.api.nvim_set_hl(0, 'FloatBorder', { ctermbg = 'none', })
 	vim.bo.filetype = filetype
 
-	confirm_cmd = string.format(':lua SurroundInsert(%d, %d, %d, %d)<CR>', pos[1], win_id, namespace, ext_mark)
+	confirm_cmd = string.format(':lua PreSurround(%d, %d, %d, %d)<CR>', pos[1], win_id, namespace, ext_mark)
 	quit_cmd = string.format(':q | lua vim.api.nvim_set_current_win(%d)<CR>', win_id)
 	vim.api.nvim_create_augroup('surround_insert', { clear = true, })
 	vim.api.nvim_create_autocmd('TextChanged', au_opts)

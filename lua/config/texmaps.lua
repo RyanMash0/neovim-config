@@ -29,7 +29,7 @@ function TexMaps()
 		vim.api.nvim_buf_set_keymap(0, '!', '|'..sets[i], set_str, {})
 	end
 
-	vim.api.nvim_buf_set_keymap(0, 'i', '$', '<Esc>:SurroundInsert $<CR>', {})
+	vim.api.nvim_buf_set_keymap(0, 'i', '$', '<Esc>:PreSurround $<CR>', {})
 	vim.api.nvim_buf_set_keymap(0, 'i', '|$', '$', { noremap = true })
 	vim.api.nvim_buf_set_keymap(0, 'i', '|set', '<Esc>:MakeSet<CR>', {})
 
