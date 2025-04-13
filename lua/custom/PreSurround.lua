@@ -7,6 +7,8 @@ local surround = vim.api.nvim_create_namespace('surround_ops')
 vim.api.nvim_set_hl(surround, 'NormalFloat', { ctermbg = 'none', })
 vim.api.nvim_set_hl(surround, 'FloatBorder', { ctermbg = 'none', })
 
+vim.api.nvim_create_augroup('presurround', { clear = true })
+
 function PreSurround(n_buf_id, win_id, n_win_id)
 	local ns_mrk_pos = vim.api.nvim_buf_get_extmark_by_id(n_buf_id, surround, 1, {})
 	local ne_mrk_pos = vim.api.nvim_buf_get_extmark_by_id(n_buf_id, surround, 2, {})
@@ -111,6 +113,7 @@ function (opts)
 	vim.api.nvim_open_win(n_buf_id, true, win_opts)
 	n_win_id = vim.fn.win_getid()
 	vim.api.nvim_win_set_hl_ns(n_win_id, surround)
+	vim.bo.filetype = filetype
 
 	vim.api.nvim_put(line, 'c', true, true)
 	vim.api.nvim_win_set_cursor(n_win_id, {1, pos[2]})
@@ -133,11 +136,8 @@ function (opts)
 
 	vim.api.nvim_feedkeys('i', 'n', true)
 
-	vim.bo.filetype = filetype
-
 	confirm_cmd = string.format(':lua PreSurround(%d, %d, %d)<CR>', n_buf_id, win_id, n_win_id)
 	quit_cmd = string.format(':q | lua vim.api.nvim_set_current_win(%d)<CR>', win_id)
-	vim.api.nvim_create_augroup('presurround', {})
 	vim.api.nvim_create_autocmd('TextChanged', au_opts)
 	vim.api.nvim_create_autocmd('TextChangedI', au_opts)
 	vim.api.nvim_buf_set_keymap(n_buf_id, 'n', '<Esc>', quit_cmd, {})
