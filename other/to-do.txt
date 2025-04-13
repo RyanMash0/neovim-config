@@ -1,3 +1,5 @@
--- Clean up SurroundInsert code
--- Make SurroundInsert put the cursor in the correct location when windows are nested more than twice
+-- Potentially refactor PreSurround code again
+-- Implement proper indentation and language server support for PreSurround nesting
+-- Make keymaps execute command without exiting insert mode for proper 1 char line support (may require reworking)
+-- Make file search work in all directories for telescope
 -- Remove sign column from telescope
