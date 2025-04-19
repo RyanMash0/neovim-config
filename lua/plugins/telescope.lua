@@ -6,28 +6,42 @@ return {
 		},
 		config = function ()
 			local telescope = require('telescope')
+			local cwd = vim.fn.getcwd(0)
 			local search_dirs = {
+        '**/Dropbox/Personal/text_files/**',
 				'**/Dropbox/UNC/**',
-				'\\.config/**',
-				'\\.local/**',
+				'/\\.config/**',
 			}
+
 			local exclude_dirs = {
 				'**/lazy/**',
 				'**/swap/**',
 				'**/shada/**',
 				'**/\\.git/**',
 			}
+
 			local exclude_files = {
 				'**/\\.DS_Store',
 				'*\\.xlsx',
 				'*\\.class',
 				'*\\.zip',
+        '*\\.jpeg',
+        '*\\.jpg',
+        '*\\.png',
+        '*\\.docx',
+        '*\\.mp3',
+        '*\\.mp4',
+        '*\\.mov',
+        '*\\.wav',
+        '*\\.pkf',
 			}
+
 			local exclude_tex = {
 				'*\\.pdf',
 				'*\\.fls',
 				'*\\.aux',
 				'*\\.synctex',
+				'*\\.synctex.gz',
 				'*\\.fdb_latexmk',
 			}
 
@@ -50,8 +64,17 @@ return {
 			end
 
 			telescope.setup({
+				defaults = {
+					mappings = {
+						i = {
+							['<C-h>'] = 'move_selection_previous',
+							['<C-l>'] = 'move_selection_next',
+						},
+					},
+				},
 				pickers = {
 					find_files = {
+						cwd = '~',
 						find_command = find_args,
 					}
 				}

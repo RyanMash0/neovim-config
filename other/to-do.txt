@@ -1,5 +1,7 @@
+-------------------------------------------------------------------------------
+-- To-Do List                                                                --
+-------------------------------------------------------------------------------
 -- Potentially refactor PreSurround code again
 -- Implement proper indentation and language server support for PreSurround nesting
 -- Make keymaps execute command without exiting insert mode for proper 1 char line support (may require reworking)
--- Make file search work in all directories for telescope
--- Remove sign column from telescope
+-- Fix PreSurround bug causing improper indentation
