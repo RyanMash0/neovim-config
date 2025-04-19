@@ -10,6 +10,10 @@ function MakeSet(args)
 	local row = pos[1] - 1
 	local col = pos[2] + 1
 
+	if cond == '' then
+		set = '\\lbrace '..elem..' \\rbrace'
+	end
+
 	vim.api.nvim_buf_set_text(0, row, col, row, col, {set})
 	vim.api.nvim_input(#set..'la')
 

@@ -6,7 +6,6 @@ return {
 		},
 		config = function ()
 			local telescope = require('telescope')
-			local cwd = vim.fn.getcwd(0)
 			local search_dirs = {
         '**/Dropbox/Personal/text_files/**',
 				'**/Dropbox/UNC/**',
