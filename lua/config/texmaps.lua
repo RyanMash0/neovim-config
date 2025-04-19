@@ -18,7 +18,7 @@ function TexMaps()
 	local item_str
 	for i = 1 , #items do
 		item_str = '\\item[('..items[i]..')] '
-		vim.api.nvim_buf_set_keymap(0, 'i', '|item'..items[i], item_str, {})
+		vim.api.nvim_buf_set_keymap(0, 'i', '--item'..items[i], item_str, {})
 	end
 
 	local sets = { 'reals', 'nats', 'ints', 'rats', 'irrs' }
@@ -26,11 +26,11 @@ function TexMaps()
 	local set_str
 	for i = 1, #sets do
 		set_str = '\\mathds{'..set_symbs[i]..'}'
-		vim.api.nvim_buf_set_keymap(0, '!', '|'..sets[i], set_str, {})
+		vim.api.nvim_buf_set_keymap(0, '!', '--'..sets[i], set_str, {})
 	end
 
-	vim.api.nvim_buf_set_keymap(0, 'i', '$', '<Esc>:PreSurround $<CR>', {})
-	vim.api.nvim_buf_set_keymap(0, 'i', '|$', '$', { noremap = true })
-	vim.api.nvim_buf_set_keymap(0, 'i', '|set', '<Esc>:MakeSet<CR>', {})
+	vim.api.nvim_buf_set_keymap(0, 'i', '$<CR>', '<Esc>:PreSurround $<CR>', {})
+	vim.api.nvim_buf_set_keymap(0, 'i', '|<CR>', '<Esc>:PreSurround |<CR>', {})
+	vim.api.nvim_buf_set_keymap(0, 'i', '--set', '<Esc>:MakeSet<CR>', {})
 
 end
