@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---  ChangeSurround Plugin                                                    --
+-- ChangeSurround Plugin                                                     --
 -------------------------------------------------------------------------------
 require('custom.utils.FindPair')
 require('custom.utils.MakeSurround')

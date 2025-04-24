@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---  LSP Config                                                               --
+-- LSP Config                                                                --
 -------------------------------------------------------------------------------
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 vim.diagnostic.config({

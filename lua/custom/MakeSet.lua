@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---  LaTeX Make Set Plugin                                                    --
+-- LaTeX Make Set Plugin                                                     --
 -------------------------------------------------------------------------------
 function MakeSet(args)
 	if args[1] == nil or args[2] == nil then return end

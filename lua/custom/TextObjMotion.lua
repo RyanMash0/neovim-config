@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---  Text Object Motion Plugin                                                --
+-- Text Object Motion Plugin                                                 --
 -------------------------------------------------------------------------------
 function TextObjMotion(opts)
 	local usage = 'Usage: :TextObjMotion <colection_type><character>'
