@@ -2,6 +2,7 @@
 -- PostSurround Plugin                                                       --
 -------------------------------------------------------------------------------
 require('custom.utils.MakeSurround')
+require('custom.utils.GetInput')
 
 function PostSurround(chars)
 	local col_start = vim.api.nvim_buf_get_mark(0, "[")[2]
@@ -20,29 +21,26 @@ function PostSurround(chars)
 
 end
 
-local function get_input(mode)
-
-	vim.ui.input({ prompt = 'Surround with: ' }, function(input)
-		local keys = {
-			['n'] = 'g@',
-			['v'] = '`<v`>g@',
-		}
-		if input == nil then return end
-		vim.g.post_surround_input = input
-		vim.o.operatorfunc = '{ -> v:lua.PostSurround(g:post_surround_input) }'
-		vim.fn.feedkeys(keys[mode])
-	end)
+local function setOpFunc(mode)
+	local input = GetInput('Surround with')
+	local keys = {
+		['n'] = 'g@',
+		['v'] = '`<v`>g@',
+	}
+	vim.g.post_surround_input = input
+	vim.o.operatorfunc = '{ -> v:lua.PostSurround(g:post_surround_input) }'
+	vim.fn.feedkeys(keys[mode])
 
 end
 
 vim.api.nvim_create_user_command('PostSurround',
 	function ()
-		get_input('n')
+		setOpFunc('n')
 	end,
 	{ nargs = 0 })
 
 vim.api.nvim_create_user_command('VPostSurround',
 	function ()
-		get_input('v')
+		setOpFunc('v')
 	end,
 	{ nargs = 0, range = true })

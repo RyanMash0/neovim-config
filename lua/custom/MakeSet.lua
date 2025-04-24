@@ -1,7 +1,10 @@
 -------------------------------------------------------------------------------
--- LaTeX Make Set Plugin                                                     --
+-- LaTeX Make Set Plugin                                                    --
 -------------------------------------------------------------------------------
-function MakeSet(args)
+require('custom.utils.GetInput')
+
+function MakeSet()
+	local args = {GetInput('Element'), GetInput('Condition')}
 	if args[1] == nil or args[2] == nil then return end
 	local elem = args[1]
 	local cond = args[2]
@@ -19,24 +22,8 @@ function MakeSet(args)
 
 end
 
-local function get_input()
-	local element
-	local condition
-
-	vim.ui.input({ prompt = 'Element: ' }, function (input)
-		element = input
-	end)
-
-	vim.ui.input({ prompt = 'Condition: ' }, function (input)
-		condition = input
-	end)
-
-	return {element, condition}
-end
-
 vim.api.nvim_create_user_command('MakeSet',
 function ()
-	local args = get_input()
-	MakeSet(args)
+	MakeSet()
 end,
 { nargs = 0 })

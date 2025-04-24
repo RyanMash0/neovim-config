@@ -2,8 +2,10 @@
 -- DeleteSurround Plugin                                                     --
 -------------------------------------------------------------------------------
 require('custom.utils.FindPair')
+require('custom.utils.GetInput')
 
-function DeleteSurround(chars)
+function DeleteSurround()
+	local chars = GetInput('Delete surrounding')
 	local pos = FindPair(chars)
 	if pos == nil then return end
 	local sRow = pos[1][1]
@@ -16,16 +18,8 @@ function DeleteSurround(chars)
 
 end
 
-local function get_input()
-	vim.ui.input({ prompt = 'Delete surrounding: ' }, function(input)
-		if input == nil then return end
-		DeleteSurround(input)
-	end)
-
-end
-
 vim.api.nvim_create_user_command('DeleteSurround',
 	function ()
-		get_input()
+		DeleteSurround()
 	end,
 	{ nargs = 0 })
