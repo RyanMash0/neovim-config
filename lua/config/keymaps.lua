@@ -10,9 +10,9 @@ vim.keymap.set('n', ',', '<Nop>')
 vim.g.mapleader = ","
 
 -- Completion
-vim.keymap.set('i', '<Tab>', '<C-n>')
-vim.keymap.set('i', '<S-Tab>', '<C-p>')
-vim.cmd("inoremap <expr> <cr> pumvisible() ? '<C-y>' : '<CR>'")
+-- vim.cmd("inoremap <expr> <Tab> pumvisible() ? '<C-n>' : '<Tab>'")
+-- vim.cmd("inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'")
+-- vim.cmd("inoremap <expr> <cr> pumvisible() ? '<C-y>' : '<CR>'")
 
 -- Explore
 vim.keymap.set('n', L..'e', '<Cmd>Ex<CR>')
@@ -36,13 +36,13 @@ vim.keymap.set('n', L..'ds', ':DeleteSurround<CR>')
 vim.keymap.set('n', L..'cs', ':ChangeSurround<CR>')
 
 -- Surround Insert
--- vim.keymap.set('i', '()<CR>', '<Esc>:PreSurround (<CR>')
--- vim.keymap.set('i', '[]<CR>', '<Esc>:PreSurround [<CR>')
--- vim.keymap.set('i', '{}<CR>', '<Esc>:PreSurround {<CR>')
--- vim.keymap.set('i', '{} <CR>', '<Esc>:PreSurround { <CR>')
--- vim.keymap.set('i', '<><CR>', '<Esc>:PreSurround <<CR>')
--- vim.keymap.set('i', '\"\"<CR>', '<Esc>:PreSurround \"<CR>')
--- vim.keymap.set('i', '\'\'<CR>', '<Esc>:PreSurround \'<CR>')
+vim.keymap.set('i', '(<CR>', '<Esc>:PreSurround (<CR>')
+vim.keymap.set('i', '[<CR>', '<Esc>:PreSurround [<CR>')
+vim.keymap.set('i', '{<CR>', '<Esc>:PreSurround {<CR>')
+vim.keymap.set('i', '{ <CR>', '<Esc>:PreSurround { <CR>')
+vim.keymap.set('i', '<<CR>', '<Esc>:PreSurround <<CR>')
+vim.keymap.set('i', '\"<CR>', '<Esc>:PreSurround \"<CR>')
+vim.keymap.set('i', '\'<CR>', '<Esc>:PreSurround \'<CR>')
 
 -- Color Column
 vim.keymap.set('n', L..'c+', ':set colorcolumn=80<CR>')
