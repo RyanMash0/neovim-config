@@ -5,3 +5,4 @@
 -- Implement proper indentation and language server support for PreSurround nesting
 -- Make keymaps execute command without exiting insert mode for proper 1 char line support (may require reworking)
 -- Fix PreSurround bug causing improper indentation
+-- Update headings

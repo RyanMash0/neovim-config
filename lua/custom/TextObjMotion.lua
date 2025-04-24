@@ -2,9 +2,9 @@
 --  Text Object Motion Plugin                                                --
 -------------------------------------------------------------------------------
 function TextObjMotion(opts)
-	local usage = 'usage: :TextObjMotion <colection_type><character>'
+	local usage = 'Usage: :TextObjMotion <colection_type><character>'
 	if #opts.args ~= 2 then
-		print("argument must consist of two characters\n"..usage)
+		print("Argument must consist of two characters\n"..usage)
 		return
 	end
 
@@ -17,14 +17,14 @@ function TextObjMotion(opts)
 		l_shift = 1
 		r_shift = 1
 	else
-		print("first character must be either 'a' or 'i'\n"..usage)
+		print("First character must be either 'a' or 'i'\n"..usage)
 		return
 	end
 	local pos = vim.fn.getpos('.')
 	local line = vim.api.nvim_buf_get_lines(0, pos[2] - 1, pos[2], true)[1]
 
 	if line:sub(pos[3], pos[3]) == opts.args:sub(2,2) then
-		print("error: cursor must be inside surrounding character")
+		print("Error: cursor must be inside surrounding character")
 		return
 	end
 
@@ -40,7 +40,7 @@ function TextObjMotion(opts)
 				j = j - 1
 			end
 			if i - 1 < 0 then
-				print("error: no surrounding character found to the left")
+				print("Error: no surrounding character found to the left")
 				return false
 			end
 			i = i - 1
@@ -68,7 +68,7 @@ function TextObjMotion(opts)
 				j = j + 1
 			end
 			if i + 1 > last_line then
-				print("error: no surrounding character found to the right")
+				print("Error: no surrounding character found to the right")
 				return false
 			end
 			i = i + 1
