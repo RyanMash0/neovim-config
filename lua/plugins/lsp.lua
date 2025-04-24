@@ -3,9 +3,11 @@ return {
 		'L3MON4D3/LuaSnip',
 		build = 'make install_jsregexp'
 	},
+
 	{
 		'onsails/lspkind.nvim'
 	},
+
   {
     'hrsh7th/nvim-cmp',
     config = function()
@@ -120,37 +122,16 @@ return {
 			})
     end
   },
+
 	{
 		'saadparwaiz1/cmp_luasnip',
 	},
+
 	{
 		'hrsh7th/cmp-nvim-lsp',
 	},
+
   {
     'neovim/nvim-lspconfig',
-    config = function()
-			local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-			vim.diagnostic.config({
-				virtual_text = true
-			})
-      require('lspconfig').ts_ls.setup{ capabilities = capabilities, }
-			require('lspconfig').pyright.setup{ capabilities = capabilities, }
-			require('lspconfig').texlab.setup{ capabilities = capabilities, }
-			require('lspconfig').jdtls.setup{ capabilities = capabilities, }
-      require('lspconfig').lua_ls.setup {
-				capabilities = capabilities,
-      	settings = {
-					Lua = {
-						diagnostics = {
-							globals = {'vim'}
-						},
-						workspace = {
-							library = vim.api.nvim_get_runtime_file('', true),
-						},
-					},
-				},
-			}
-    end
   },
 }
