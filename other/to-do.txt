@@ -1,7 +1,6 @@
 -------------------------------------------------------------------------------
 -- To-Do List                                                                --
 -------------------------------------------------------------------------------
--- Potentially refactor PreSurround code again
--- Implement proper indentation and language server support for PreSurround nesting
--- Make keymaps execute command without exiting insert mode for proper 1 char line support (may require reworking)
--- Fix PreSurround bug causing improper indentation
+- Fix MakeSet bug causing error on insert into empty line
+- Fix DeleteSurround quit bug
+- Make ChangeSurround and DeleteSurround . repeatable

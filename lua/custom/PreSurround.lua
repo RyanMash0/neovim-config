@@ -11,76 +11,47 @@ vim.api.nvim_create_augroup('presurround', { clear = true })
 
 table.unpack = table.unpack or unpack
 
-function PreSurround(nBufId, winId, nwinId)
-	local nsMrkPos = vim.api.nvim_buf_get_extmark_by_id(nBufId, surround, 1, {})
-	local neMrkPos = vim.api.nvim_buf_get_extmark_by_id(nBufId, surround, 2, {})
-	local col = vim.fn.charcol('$', winId) - vim.fn.charcol('.', winId)
-	local pos
-	local textArgs
-	local text
+function PreSurround()
+	local winId = vim.w.presurround_win_id
+	local bufId = vim.fn.bufnr()
+	local nwinId = vim.fn.win_getid()
 
-	if col > 1 then
-		textArgs = {
-			nBufId,
-			nsMrkPos[1],
-			nsMrkPos[2] - 1,
-			neMrkPos[1],
-			neMrkPos[2],
-			{},
-		}
-	else
-		textArgs = {
-			nBufId,
-			nsMrkPos[1],
-			nsMrkPos[2],
-			neMrkPos[1],
-			neMrkPos[2] + 1,
-			{},
-		}
-	end
-	text = vim.api.nvim_buf_get_text(table.unpack(textArgs))
+	local mrkId = vim.w.presurround_end_mark_id
+	local mrkArgs = {bufId, surround, mrkId, {}}
+	local mrkPos = vim.api.nvim_buf_get_extmark_by_id(table.unpack(mrkArgs))
+
+	local quitMap = vim.w.presurround_quit_map
+	local confirmMap = vim.w.presurround_confirm_map
 
 	vim.api.nvim_win_close(nwinId, false)
 	vim.api.nvim_set_current_win(winId)
 
-	pos = vim.api.nvim_win_get_cursor(winId)
-	local indent = vim.fn.indent(pos[1] - 1)
-
-	if col == 0 then
-		text[1] = vim.text.indent(indent, text[1])
-	end
-
-	for i = 2, #text, 1 do
-		text[i] = vim.text.indent(indent, text[i])
-	end
-	vim.api.nvim_put(text, 'c', true, true)
-
-	if col > 1 then
-		vim.api.nvim_feedkeys('h', 'n', true)
-	end
+	vim.api.nvim_win_set_cursor(winId, {mrkPos[1] + 1, mrkPos[2] - 1})
 
 	vim.api.nvim_feedkeys('a', 'n', true)
+
+	if quitMap == '' and confirmMap == '' then
+		vim.api.nvim_buf_del_keymap(bufId, 'n', '<Esc>')
+		vim.api.nvim_buf_del_keymap(bufId, 'n', '<CR>')
+		vim.api.nvim_clear_autocmds({ group = surround })
+	end
+
+	vim.api.nvim_buf_del_extmark(bufId, surround, mrkId)
 
 end
 
 local function win_resize()
-	local winRel = vim.api.nvim_win_get_config(0).relative
-	local bufHeight = vim.api.nvim_win_get_height(0)
-	local lines = vim.fn.getpos('$')[2]
+	local winHeight = vim.api.nvim_win_get_height(0)
 	local winWidth = vim.api.nvim_win_get_width(0)
-	local linesStr = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-	local extraLines = 0
-	local nLines
-	local strWidth
 
-	for i = 1, #linesStr, 1 do
-		strWidth = vim.fn.strdisplaywidth(linesStr[i])
-		nLines = math.floor(strWidth / winWidth)
-		extraLines = extraLines + nLines
-	end
+	local lineNr = vim.api.nvim_win_get_cursor(0)[1]
+	local linesStr = vim.api.nvim_buf_get_lines(0, lineNr - 1, lineNr, true)
 
-	if winRel == 'win' and bufHeight ~= lines + extraLines then
-		vim.api.nvim_win_set_height(0, lines + extraLines)
+	local strWidth = vim.fn.strdisplaywidth(linesStr[1])
+	local extraLines = math.floor(strWidth / winWidth)
+
+	if winHeight ~= 1 + extraLines then
+		vim.api.nvim_win_set_height(0, 1 + extraLines)
 	end
 end
 
@@ -88,17 +59,11 @@ vim.api.nvim_create_user_command('PreSurround',
 function (opts)
 	local sChars = MakeSurround(opts.args)
 	local putChars = sChars[1]..sChars[2]
-	local filetype = vim.bo.filetype
-	local bufId = vim.fn.bufnr()
-	local nBufId = vim.api.nvim_create_buf(false, true)
-	local winId = vim.fn.win_getid()
-	local nwinId
 
-	local auOpts = {
-		group = 'presurround',
-		buffer = nBufId,
-		callback = function () win_resize() end,
-	}
+	local bufId = vim.fn.bufnr()
+	local winId = vim.fn.win_getid()
+	local winRel = vim.api.nvim_win_get_config(winId).relative
+	local pos = vim.api.nvim_win_get_cursor(winId)
 
 	local widthMult = 0.5
 	local heightMult = 0.8
@@ -114,75 +79,85 @@ function (opts)
 		border = 'rounded',
 	}
 
-	local winRel = vim.api.nvim_win_get_config(winId).relative
-	local pos = vim.api.nvim_win_get_cursor(winId)
-	local line = vim.api.nvim_buf_get_lines(bufId, pos[1] - 1, pos[1], true)
-
-	local confirmStr
-	local confirmCmd
-	local quitStr
-	local quitCmd
-	local extPos
-	local cursorArgs
-	local nsMrkPos
-	local nsMrkArgs
-	local neMrkArgs
-	local col
-
 	if winRel == 'win' then
 		winOpts.width = winWidth
-		winOpts.row = winHeight + 1
+		winOpts.row = -1
 		winOpts.col = -1
 	end
 
-	vim.api.nvim_open_win(nBufId, true, winOpts)
-	nwinId = vim.fn.win_getid()
+	local nwinId = vim.api.nvim_open_win(bufId, true, winOpts)
+
+	local lineDiff
+	local line
+	local col
+
+	local mrkArgs
+	local mrkId
+	local exitStr
+
+	local auOpts = {
+		group = 'presurround',
+		buffer = bufId,
+		callback = function ()
+			if vim.api.nvim_win_get_config(0).relative == 'win' then
+				win_resize()
+			end
+		end,
+	}
+
+	vim.api.nvim_win_set_cursor(nwinId, pos)
 	vim.api.nvim_win_set_hl_ns(nwinId, surround)
-	vim.bo.filetype = filetype
+	vim.wo.signcolumn = 'no'
 
-	vim.api.nvim_put(line, 'c', true, true)
-	vim.api.nvim_win_set_cursor(nwinId, {1, pos[2]})
-
-	col = vim.fn.charcol('$') - vim.fn.charcol('.')
-	if col > 1 then
-		vim.api.nvim_feedkeys('h', 'n', true)
-	end
+	col = vim.fn.charcol('$', winId) - vim.fn.charcol('.', winId)
 
 	vim.api.nvim_put({putChars}, 'c', true, true)
+	pos = vim.api.nvim_win_get_cursor(nwinId)
 
-	extPos = vim.api.nvim_win_get_cursor(nwinId)
-	nsMrkArgs = {
-		nBufId,
+	if col > 1 then
+		vim.api.nvim_win_set_cursor(nwinId, {pos[1], pos[2] - 1})
+	else
+		pos = vim.api.nvim_win_get_cursor(nwinId)
+		line = vim.fn.col('$')
+		lineDiff = line
+
+		vim.cmd('normal! ==')
+
+		line = vim.fn.col('$')
+		lineDiff = line - lineDiff
+		lineDiff = lineDiff * vim.o.shiftwidth
+
+		vim.api.nvim_win_set_cursor(nwinId, {pos[1], pos[2] + lineDiff})
+		pos = vim.api.nvim_win_get_cursor(nwinId)
+
+		pos[2] = pos[2] + 1
+	end
+
+	mrkArgs = {
+		bufId,
 		surround,
-		extPos[1] - 1,
-		extPos[2] - #putChars + 1,
-		{ id = 1, right_gravity = false },
+		pos[1] - 1,
+		pos[2],
+		{},
 	}
-	neMrkArgs = {
-		nBufId,
-		surround,
-		extPos[1] - 1,
-		extPos[2],
-		{ id = 2 }
-	}
-	vim.api.nvim_buf_set_extmark(table.unpack(nsMrkArgs))
-	vim.api.nvim_buf_set_extmark(table.unpack(neMrkArgs))
 
-	vim.cmd('normal! ==')
+	mrkId = vim.api.nvim_buf_set_extmark(table.unpack(mrkArgs))
 
-	nsMrkPos = vim.api.nvim_buf_get_extmark_by_id(nBufId, surround, 1, {})
-	cursorArgs = {nwinId, {nsMrkPos[1] + 1, nsMrkPos[2] + #sChars[1]}}
-	vim.api.nvim_win_set_cursor(table.unpack(cursorArgs))
+	pos[2] = pos[2] - #sChars[2]
+	vim.api.nvim_win_set_cursor(nwinId, pos)
 
-	vim.api.nvim_feedkeys('i', 'n', true)
+	vim.api.nvim_command('startinsert')
 
-	confirmStr = ':lua PreSurround(%d, %d, %d)<CR>'
-	confirmCmd = string.format(confirmStr, nBufId, winId, nwinId)
-	quitStr = ':q | lua vim.api.nvim_set_current_win(%d)<CR>'
-	quitCmd = string.format(quitStr, winId)
+	vim.w.presurround_quit_map = vim.fn.maparg('<Esc>', 'n')
+	vim.w.presurround_confirm_map = vim.fn.maparg('<CR>', 'n')
+	vim.w.presurround_end_mark_id = mrkId
+	vim.w.presurround_win_id = winId
+
+	exitStr = ':lua PreSurround()<CR>'
+
 	vim.api.nvim_create_autocmd('TextChanged', auOpts)
 	vim.api.nvim_create_autocmd('TextChangedI', auOpts)
-	vim.api.nvim_buf_set_keymap(nBufId, 'n', '<Esc>', quitCmd, {})
-	vim.api.nvim_buf_set_keymap(nBufId, 'n', '<CR>', confirmCmd, {})
+	vim.api.nvim_buf_set_keymap(bufId, 'n', '<Esc>', exitStr, {})
+	vim.api.nvim_buf_set_keymap(bufId, 'n', '<CR>', exitStr, {})
 end,
 { nargs = 1 })
